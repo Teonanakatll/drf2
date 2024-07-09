@@ -35,6 +35,10 @@ class WomenSerializer(serializers.Serializer):
         instance.save()
         return instance
 
+    # def delete(self, instance):
+    #     instance.delete()
+    #     return instance.title
+
 # def encode():
 #     model = WomenModel('Angelina Jolie', 'content: Angelina Jolie')
 #     model_sr = WomenSerializer(model)
