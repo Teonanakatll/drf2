@@ -2,46 +2,51 @@ from django.forms import model_to_dict
 from rest_framework import generics, viewsets
 from django.shortcuts import render
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Women, Category
+from .permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
 from .serializers import WomenSerializer
 
 
-class WomenViewSet(viewsets.ModelViewSet):
+# class WomenViewSet(viewsets.ModelViewSet):
+#     queryset = Women.objects.all()
+#     serializer_class = WomenSerializer
+#
+#     # для возвращения определённх записей необходимо переопределить метод get_queryset
+#     def get_queryset(self):
+#         pk = self.kwargs.get("pk")
+#
+#         if not pk:
+#             return Women.objects.all()[:3]
+#         return Women.objects.filter(pk=pk)
+#
+#     # для добавления собственных маршрутов во ViewSet например для вывода списка категорий
+#     # detail=True для возвращения одной записи, False - для списка
+#     @action(methods=['get'], detail=False)
+#     # имя функции подставляется в адрес марщрута api/v1/women/category/
+#     # для возвращения отдельной записи необходимо дописать параметр pk
+#     def category(self, request):
+#         cats = Category.objects.all()
+#         return Response({'cats': [c.name for c in cats]})
+
+class WomenAPIList(generics.ListCreateAPIView):
     queryset = Women.objects.all()
     serializer_class = WomenSerializer
+    # permission_classes = (IsAuthenticatedOrReadOnly,)
 
-    # для возвращения определённх записей необходимо переопределить метод get_queryset
-    def get_queryset(self):
-        pk = self.kwargs.get("pk")
 
-        if not pk:
-            return Women.objects.all()[:3]
-        return Women.objects.filter(pk=pk)
+class WomenAPIUpdate(generics.RetrieveUpdateAPIView):
+    queryset = Women.objects.all()
+    serializer_class = WomenSerializer
+    permission_classes = (IsOwnerOrReadOnly,)
 
-    # для добавления собственных маршрутов во ViewSet например для вывода списка категорий
-    # detail=True для возвращения одной записи, False - для списка
-    @action(methods=['get'], detail=False)
-    # имя функции подставляется в адрес марщрута api/v1/women/category/
-    # для возвращения отдельной записи необходимо дописать параметр pk
-    def category(self, request):
-        cats = Category.objects.all()
-        return Response({'cats': [c.name for c in cats]})
-
-# class WomenAPIList(generics.ListCreateAPIView):
-#     queryset = Women.objects.all()
-#     serializer_class = WomenSerializer
-#
-#
-# class WomenAPIUpdate(generics.UpdateAPIView):
-#     queryset = Women.objects.all()
-#     serializer_class = WomenSerializer
-#
-# class WomenAPIDetailView(generics.RetrieveUpdateDestroyAPIView):
-#     queryset = Women.objects.all()
-#     serializer_class = WomenSerializer
+class WomenAPIDestroy(generics.RetrieveDestroyAPIView):
+    queryset = Women.objects.all()
+    serializer_class = WomenSerializer
+    permission_classes = (IsAdminOrReadOnly,)
 
 # class WomenAPIView(APIView):
 #     def get(self, request):

@@ -17,7 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from women.views import WomenViewSet  # WomenAPIList, WomenAPIUpdate, WomenAPIDetailView, WomenAPIView
+from women.views import WomenAPIList, \
+    WomenAPIDestroy, WomenAPIUpdate  # WomenViewSet, WomenAPIList, WomenAPIUpdate, WomenAPIDetailView, WomenAPIView
+
 from rest_framework import routers
 
 
@@ -31,12 +33,16 @@ router = routers.DefaultRouter()
 # в имени вместо имени модели в названии маршрута
 
 # регистрируем вьюсет в роутере, придумываем префикс и укаываем вьюсет
-router.register(r'women', WomenViewSet)
-print(router.urls)
+# router.register(r'women', WomenViewSet)
+# print(router.urls)
 
 urlpatterns = [
     path('admin/', admin.site.urls),  # http://127.0.0.1:8000/api/v1/women/
-    path('api/v1/', include(router.urls)),
+    # path('api/v1/', include(router.urls)),
+
+    path('api/v1/women/', WomenAPIList.as_view()),
+    path('api/v1/women/<int:pk>/', WomenAPIUpdate.as_view()),
+    path('api/v1/womendelete/<int:pk>/', WomenAPIDestroy.as_view()),
 
 
     # во вьюсетах можно указывать метод обработки запроса и
