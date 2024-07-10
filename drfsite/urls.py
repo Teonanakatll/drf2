@@ -21,9 +21,18 @@ from women.views import WomenViewSet  # WomenAPIList, WomenAPIUpdate, WomenAPIDe
 from rest_framework import routers
 
 
-router = routers.SimpleRouter()
+# router = routers.SimpleRouter()
+router = routers.DefaultRouter()
+
+# при использовании DefaultRouter можно обращаться к корню маршрутов (api/v1/) чтобы получить запись, и автоматически
+# появляются имена у маршрутов по имени моделей
+
+# если во вьюсете не указан queryset в роутере необходимо указать параметп basename='имя' которае будет использоваться
+# в имени вместо имени модели в названии маршрута
+
 # регистрируем вьюсет в роутере, придумываем префикс и укаываем вьюсет
 router.register(r'women', WomenViewSet)
+print(router.urls)
 
 urlpatterns = [
     path('admin/', admin.site.urls),  # http://127.0.0.1:8000/api/v1/women/
