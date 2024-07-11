@@ -11,6 +11,19 @@ from .permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
 from .serializers import WomenSerializer
 
 
+# Ограничение доступа (permissions)
+# AllowAny - полный доступ (стоит по умолчанию)
+# isAuthenticated - только для зарегистрированных пользователей
+# isAdminUser - только для администраторов
+# isAuthenticatedOrReadOnly - только для авторизованных или всем, но только для чтения
+
+# Авторизация и аутентификация
+# Session-based authentication - аутентификация на основе сессий и cookies
+# Token-based authentication - аутентификация на основе токенов
+# JSON Web Token (JWT) - аутентификация на основе JWT-токенов
+# Django REST framework OAuth - авторизация через социальные сети
+
+
 # class WomenViewSet(viewsets.ModelViewSet):
 #     queryset = Women.objects.all()
 #     serializer_class = WomenSerializer
@@ -35,7 +48,7 @@ from .serializers import WomenSerializer
 class WomenAPIList(generics.ListCreateAPIView):
     queryset = Women.objects.all()
     serializer_class = WomenSerializer
-    # permission_classes = (IsAuthenticatedOrReadOnly,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
 
 class WomenAPIUpdate(generics.RetrieveUpdateAPIView):

@@ -37,8 +37,12 @@ router = routers.DefaultRouter()
 # print(router.urls)
 
 urlpatterns = [
+
     path('admin/', admin.site.urls),  # http://127.0.0.1:8000/api/v1/women/
     # path('api/v1/', include(router.urls)),
+
+    # маршрут авторизации на основе сессии и cookies, префикс придумываем сами
+    path('api/v1/drf-auth/', include('rest_framework.urls')),
 
     path('api/v1/women/', WomenAPIList.as_view()),
     path('api/v1/women/<int:pk>/', WomenAPIUpdate.as_view()),
