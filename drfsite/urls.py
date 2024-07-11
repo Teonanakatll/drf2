@@ -14,8 +14,9 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import djoser
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 
 from women.views import WomenAPIList, \
     WomenAPIDestroy, WomenAPIUpdate  # WomenViewSet, WomenAPIList, WomenAPIUpdate, WomenAPIDetailView, WomenAPIView
@@ -43,6 +44,11 @@ urlpatterns = [
 
     # маршрут авторизации на основе сессии и cookies, префикс придумываем сами
     path('api/v1/drf-auth/', include('rest_framework.urls')),
+
+    # авторизация на основе токенов, пакет djoser
+    path('api/v1/auth/', include('djoser.urls')),
+    # ендпоинты токена (login, logout)
+    re_path(r'^auth/', include('djoser.urls.authtoken')),
 
     path('api/v1/women/', WomenAPIList.as_view()),
     path('api/v1/women/<int:pk>/', WomenAPIUpdate.as_view()),

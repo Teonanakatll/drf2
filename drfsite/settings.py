@@ -40,6 +40,11 @@ INSTALLED_APPS = [
 
     'women.apps.WomenConfig',
     'rest_framework',
+
+    # чтобы рест фреймворк использовал свою стандартную таблицу токенов
+    'rest_framework.authtoken',
+    # авторизация по токенам
+    'djoser',
 ]
 
 MIDDLEWARE = [
@@ -136,5 +141,11 @@ REST_FRAMEWORK = {
     # ограничение на уровне всего проекта, но классы доступа в апи представлениях переопределяют его
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        # по умолчанию аутентификация по сессиям
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ]
 }
