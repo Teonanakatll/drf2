@@ -17,6 +17,7 @@ Including another URLconf
 import djoser
 from django.contrib import admin
 from django.urls import path, include, re_path
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
 from women.views import WomenAPIList, \
     WomenAPIDestroy, WomenAPIUpdate  # WomenViewSet, WomenAPIList, WomenAPIUpdate, WomenAPIDetailView, WomenAPIView
@@ -44,6 +45,11 @@ urlpatterns = [
 
     # маршрут авторизации на основе сессии и cookies, префикс придумываем сами
     path('api/v1/drf-auth/', include('rest_framework.urls')),
+
+    # авторизация jwt
+    path('api/v1/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/v1/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/v1/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
 
     # авторизация на основе токенов, пакет djoser
     path('api/v1/auth/', include('djoser.urls')),
